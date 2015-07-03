@@ -4,7 +4,7 @@ var app = express();
 var Slack = require('node-slack');
 var port = process.env.PORT || 3000;
 var hook_url = process.env.HOOK_URL || "";
-var slack = (hook_url != "" ? new Slack(hook_url) : null;
+var slack = (hook_url != "" ? new Slack(hook_url) : null);
 
 function sendkey(code, callback) {
  /*
@@ -17,7 +17,7 @@ function sendkey(code, callback) {
 */
   if (slack != null) {
     slack.send({
-      text: 'Code received: ' + code;
+      text: 'Code received: ' + code
     });
   }
   callback();
