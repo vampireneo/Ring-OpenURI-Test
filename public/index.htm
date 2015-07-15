@@ -1,27 +1,35 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="ringApp">
   <head>
-    <script src="bower_components/angularjs/angular.min.js"></script>
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <title>Maths Question</title>
+    <link rel="stylesheet" href="css/maths.css">
   </head>
   <body>
-    <div>
-      <label>Name:</label>
-      <input type="text" ng-model="yourName" placeholder="Enter a name here">
-      <hr>
-      <h1>Hello {{yourName}}!</h1>
+    <div id="mathsDiv" ng-controller="MathsController as maths">
+      <h1 class="question">{{maths.X}} + {{maths.Y}} = ?</h1>
+      <div class="left answer">{{maths.AnsLeft}}</div>
+      <div class="right answer">{{maths.AnsRight}}</div>
       <hr>
       <ul id="messages"></ul>
     </div>
+    <script src="bower_components/angularjs/angular.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="appjs/maths.js"></script>
     <script>
       var socket = io();
+      function generateQuestion() {
+        angular.element(document.getElementById('mathsDiv')).scope().maths.random();
+        angular.element(document.getElementById('mathsDiv')).scope().$apply();
+      }
       socket.on('chat message', function(msg){
         console.log(msg);
-        $('#messages').append($('<li>').text(msg));
+        //$('#messages').append($('<li>').text(msg));
+        generateQuestion();
       });
       $(document).ready(function(){
         socket.emit('chat message', "test");
+        generateQuestion();
       });
     </script>
   </body>
