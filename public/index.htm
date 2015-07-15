@@ -1,0 +1,28 @@
+<!doctype html>
+<html ng-app>
+  <head>
+    <script src="bower_components/angularjs/angular.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div>
+      <label>Name:</label>
+      <input type="text" ng-model="yourName" placeholder="Enter a name here">
+      <hr>
+      <h1>Hello {{yourName}}!</h1>
+      <hr>
+      <ul id="messages"></ul>
+    </div>
+    <script>
+      var socket = io();
+      socket.on('chat message', function(msg){
+        console.log(msg);
+        $('#messages').append($('<li>').text(msg));
+      });
+      $(document).ready(function(){
+        socket.emit('chat message', "test");
+      });
+    </script>
+  </body>
+</html>

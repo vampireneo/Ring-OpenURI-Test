@@ -1,6 +1,8 @@
 // app.js
 var express = require('express');
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var Slack = require('node-slack');
 var port = process.env.PORT || 3000;
 var hook_url = process.env.HOOK_URL || "";
@@ -23,9 +25,22 @@ function sendkey(code, callback) {
   callback();
 }
 
+app.use("/web",express.static('public'));
+
+app.get('/', function (req, res) {
+  res.redirect("/web/index.htm");
+});
+/*
+*/
+
+app.get('/web', function (req, res) {
+  res.redirect("/web/index.htm");
+});
+
 app.get('/right', function (req, res) {
   console.log("right");
   sendkey('right', function() {
+    io.emit('chat message', 'right');
     res.sendStatus(200);
   });
 });
@@ -33,10 +48,26 @@ app.get('/right', function (req, res) {
 app.get('/left', function (req, res) {
   console.log("left");
   sendkey('left', function() {
+    io.emit('chat message', 'left');
     res.sendStatus(200);
   });
 });
 
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+  socket.on('chat message', function(msg){
+    console.log('message: ' + msg);
+    io.emit('chat message', msg);
+  });
+});
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+/*
 var server = app.listen(port, function () {
 
   var host = server.address().address;
@@ -45,3 +76,4 @@ var server = app.listen(port, function () {
   console.log('Example app listening at http://%s:%s', host, port);
 
 });
+*/
