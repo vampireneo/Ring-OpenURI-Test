@@ -1,3 +1,6 @@
+#mathsDiv {
+  margin-top: 20vh;
+}
 .question {
   text-align: center;
   font-size: 20vh;
@@ -14,6 +17,12 @@
 .left.answer {
 }
 .right.answer {
+}
+.scores {
+  font-size: 5vh;
+  position: absolute;
+  top: 0;
+  right: 2vw;
 }
 #messages {
   clear: both;

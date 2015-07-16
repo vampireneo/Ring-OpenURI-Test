@@ -37,10 +37,16 @@ app.get('/web', function (req, res) {
   res.redirect("/web/index.htm");
 });
 
+app.get('/reset', function (req, res) {
+  console.log("reset");
+  io.emit('reset');
+  res.sendStatus(200);
+});
+
 app.get('/right', function (req, res) {
   console.log("right");
   sendkey('right', function() {
-    io.emit('chat message', 'right');
+    io.emit('answer', 'right');
     res.sendStatus(200);
   });
 });
@@ -48,7 +54,7 @@ app.get('/right', function (req, res) {
 app.get('/left', function (req, res) {
   console.log("left");
   sendkey('left', function() {
-    io.emit('chat message', 'left');
+    io.emit('answer', 'left');
     res.sendStatus(200);
   });
 });
